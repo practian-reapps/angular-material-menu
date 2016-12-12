@@ -1,15 +1,15 @@
 ########################################
-angular-material-pagination
+angular-material-menu
 ########################################
 
 .. class:: no-web
 
-    Paquete para la paginación en Angular con Material de a las API rest paginados 
+    Paquete para el menu dinámico en Angular con Material 
 
 
 
     .. image:: https://github.com/.. .png
-        :alt: angular-material-pagination
+        :alt: angular-material-menu
         :width: 100%
         :align: center
 
@@ -46,65 +46,127 @@ The **latest development version** can be installed directly from github_:
 .. code-block:: bash
     
     # Universal
-    $ bower install https://github.com/practian-reapps/angular-material-pagination.git --production --save
+    $ bower install https://github.com/practian-reapps/angular-material-menu.git --production --save
 
 
 Add to your **index.html** setting like this:
 
 .. code-block:: html
 
-    <link rel="stylesheet" href="bower_components/angular-material-pagination/dist/angular-material-pagination.css" type="text/css" />
+    <link rel="stylesheet" href="bower_components/angular-material-menu/dist/angular-material-menu.css" type="text/css" />
     
-    <script src="bower_components/angular-material-pagination/dist/angular-material-pagination.tpls.js"></script>
+    <script src="bower_components/angular-material-menu/dist/angular-material-menu.js"></script>
 
-
-La API de los Resource Server debe personalizar las salidas en:
+Llenando el menú dinámico:
 
 .. code-block:: js
 
-    $scope.lista = r.data.results;
-    $scope.options = r.data.options;
+    {
 
-donde la API debe tener la siguiente forma:
+        "menu": [
 
-.. code-block:: python
-        
-        """
-        return Response({
-            'options': {
-                'count': self.page.paginator.count, # total de registros
-                'next': self.get_next_link(),
-                'previous': self.get_previous_link(),
-                'pagination': self.page_size, # per page
-                'page': self.page.number, # página actual
+            {
+                "title": "Dashboard",
+                "state": "home.dashboard",
+                "type": "link"
             },
-            'results': data
-        })
-        """
 
-ver `Django backend utils`_
+
+            {
+                "title": "Catálogo",
+                "type": "toggle",
+                "state": "home.catalogo",
+                "menu_items": [{
+                    "title": "Categorías",
+                    "state": "home.catalogo.categorias",
+                    "type": "link"
+                }, {
+                    "title": "Autores",
+                    "state": "home.catalogo.autores",
+                    "type": "link"
+                }]
+            }
+        ]
+
+    }
+
+
+Construcción del menú:
+
+.. code-block:: js
+
+    <nav>
+        <ul class="nav">
+            <div ng-repeat="section in menu.sections">
+                
+                <div ng-repeat="menu in section.menu">
+                    <li ng-if="menu.type === 'toggle'" ng-class="{'active toggled':$state.includes('{{menu.state}}')}">
+                        <a md-ink-ripple toggle-submenu class="inherit">
+                            <span class="pull-right  ">
+                              <ng-md-icon icon="keyboard_arrow_down"></ng-md-icon>
+                            </span>
+                            <i class="icon mdi-action-subject i-20"></i>
+                            <span class="font-normal">{{menu.title}}</span>
+                        </a>
+                        <ul class="nav nav-sub" ng-repeat="menu_item in menu.menu_items">
+                            <li ui-sref-active="active">
+                                <a md-ink-ripple ui-sref="{{menu_item.state}}">{{menu_item.title}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li ui-sref-active="active" ng-if="menu.type === 'link'">
+                        <a md-ink-ripple ui-sref="{{menu.state}}">
+                            <span>{{menu.title}}</span>
+                        </a>
+                    </li>
+                </div>
+                <li ui-sref-active="active" ng-if="section.type === 'link'">
+                    <a md-ink-ripple ui-sref="{{section.state}}">
+                        <span>{{section.title}}</span>
+                    </a>
+                </li>
+            </div>
+
+
+        </ul>
+    </nav>
+ 
+
 
 Config module:
 
 .. code-block:: js
 
-    var app = angular.module("catalogo", [
+    var app = angular.module('app', [
+        'ui.router',
+        'ngMaterial',
+        'ngMdIcons',
+        'pi.dynamicMenu',
+    ]);
 
-    "pi.appPagination",
+    app.constant("menuUrl", "menu.json"); // menu inicio
 
-    'ui.router',
-    'ngMaterial',
-    'ngMdIcons',
-]);
+Si el menu está en una PI:
+
+.. code-block:: js
+    
+    app.constant("apiMenuUrl", ""); // http://localhost:7001/api/oauth2_backend/usermenu/ Api que trae el menu del usuario
+
+
 
 Usage:
 
 .. code-block:: js
 
-    <md-table-pagination>
-        <app-pagination ng-if="options.pages>0" per="options.page_size" page="options.page" format="{{'jumping'}}" display="4" rango="options.range" accion="list(params)" pages="options.pages" query="query" fields="{{fields}}"></app-pagination>
-    </md-table-pagination>
+    
+    app
+        .controller('MainCtrl', function($scope, $timeout, $log, $rootScope, $filter,
+            apiUrl, $window, menuService, $mdSidenav) {
 
+            $scope.menu = menuService;
+            ...
+
+    });
 
 Finally, run ``gulp serve``.
 
@@ -127,16 +189,16 @@ Authors
 Contributors
 -------
 
-See https://github.com/practian-reapps/angular-material-pagination/graphs/contributors
+See https://github.com/practian-reapps/angular-material-menu/graphs/contributors
 
-.. _github: https://github.com/practian-reapps/angular-material-pagination
+.. _github: https://github.com/practian-reapps/angular-material-menu
 .. _Django: https://www.djangoproject.com
 .. _Django REST Framework: http://www.django-rest-framework.org
 .. _Django OAuth Toolkit: https://django-oauth-toolkit.readthedocs.io
 .. _oauth2_backend: https://github.com/practian-reapps/django-oauth2-backend
 .. _Authorization server: https://github.com/practian-ioteca-project/oauth2_backend_service
 .. _OAuth 2 Server Libraries: https://oauth.net/code
-.. _Django backend utils: https://github.com/practian-reapps/django-backend-utils/blob/master/backend_utils/pagination.py
+.. _Django backend utils: https://github.com/practian-reapps/django-backend-utils/blob/master/backend_utils/menu.py
 
 
 

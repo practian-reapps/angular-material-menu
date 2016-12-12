@@ -4,10 +4,16 @@ app
 // colocar aqui el menu para su Modelo, vease test1. 
 // o registrar el la tabla Menu
 //------------------------------
-    .factory("menuService", function($http, menuUrl) {
+    .factory("menuService", function($http, apiMenuUrl, menuUrl) {
 
     function getUserMenu() {
         console.log("exec UserMenuView");
+        return $http.get(apiMenuUrl);
+
+    }
+
+    function getMenuJson() {
+        console.log("exec getMenuJson");
         return $http.get(menuUrl);
 
     }
@@ -81,17 +87,32 @@ app
     });
 */
 
-    getUserMenu().then(function(r) {
+    getMenuJson().then(function(r) {
         menu = r.data;
-        //console.log("menuService.getUserMenu():" + JSON.stringify(menu));
+        //console.log("menuService.getMenuJson():" + JSON.stringify(menu));
         sections.push(
 
             menu
         );
 
     }, function(error) {
-        console.log("error in menuService.getUserMenu():" + JSON.stringify(error));
+        console.log("error in menuService.getMenuJson():" + JSON.stringify(error));
     });
+
+    if (apiMenuUrl !=='') {
+
+        getUserMenu().then(function(r) {
+            menu = r.data;
+            //console.log("menuService.getUserMenu():" + JSON.stringify(menu));
+            sections.push(
+
+                menu
+            );
+
+        }, function(error) {
+            console.log("error in menuService.getUserMenu():" + JSON.stringify(error));
+        });
+    }
 
 
 
