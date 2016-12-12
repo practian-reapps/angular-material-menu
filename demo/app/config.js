@@ -86,7 +86,6 @@ app
     console.log("run");
     menuService.menuUrl = "menu.json";
     //menuService.apiMenuUrl = "http://localhost:7001/api/oauth2_backend/usermenu/";
-
     $rootScope.menu = menuService.getMenu();
 
 

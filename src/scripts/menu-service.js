@@ -32,7 +32,7 @@ app.service("menuService", function($document, $window, $timeout, $q, $location,
 
         this.getMenuJson().then(function(r) {
             menu = r.data;
-            console.log("menuService.getMenuJson():" + JSON.stringify(menu));
+            //console.log("menuService.getMenuJson():" + JSON.stringify(menu));
             sections.push(
 
                 menu

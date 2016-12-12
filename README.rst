@@ -57,7 +57,7 @@ Add to your **index.html** setting like this:
     
     <script src="bower_components/angular-material-menu/dist/angular-material-menu.js"></script>
 
-Llenando el menú dinámico:
+Llenando el menú dinámico en menu.json:
 
 .. code-block:: js
 
@@ -91,9 +91,40 @@ Llenando el menú dinámico:
     }
 
 
-Construcción del menú:
+ 
+
+
+Config module:
 
 .. code-block:: js
+
+    var app = angular.module('app', [
+        'ui.router',
+        'ngMaterial',
+        'ngMdIcons',
+        'pi.dynamicMenu',
+    ]);
+
+Obteniendo el menu via http:
+
+.. code-block:: js
+    
+    app
+    .run(function($state, $rootScope, $location, $window, menuService) {
+
+        menuService.menuUrl = "menu.json";
+        // activar también si tiene el menu en una API 
+        // menuService.apiMenuUrl = "http://localhost:7001/api/oauth2_backend/usermenu/"; 
+        $rootScope.menu = menuService.getMenu();
+
+    });
+
+
+
+
+Construcción del menú:
+
+.. code-block:: html
 
     <nav>
         <ul class="nav">
@@ -130,43 +161,6 @@ Construcción del menú:
 
         </ul>
     </nav>
- 
-
-
-Config module:
-
-.. code-block:: js
-
-    var app = angular.module('app', [
-        'ui.router',
-        'ngMaterial',
-        'ngMdIcons',
-        'pi.dynamicMenu',
-    ]);
-
-    app.constant("menuUrl", "menu.json"); // menu inicio
-
-Si el menu está en una PI:
-
-.. code-block:: js
-    
-    app.constant("apiMenuUrl", ""); // http://localhost:7001/api/oauth2_backend/usermenu/ Api que trae el menu del usuario
-
-
-
-Usage:
-
-.. code-block:: js
-
-    
-    app
-        .controller('MainCtrl', function($scope, $timeout, $log, $rootScope, $filter,
-            apiUrl, $window, menuService, $mdSidenav) {
-
-            $scope.menu = menuService;
-            ...
-
-    });
 
 Finally, run ``gulp serve``.
 
