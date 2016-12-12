@@ -1,0 +1,46 @@
+<div ng-cloak>
+    <md-content class="md-padding" layout-xs="column" layout="row">
+        <div flex-xs flex-gt-xs="100" layout="column">
+            <md-card ng-controller="AutorCtrl">
+                <md-card-header>
+                <div id="nav" ng-include="'app/views/layouts/partials/aside.nav.uikit.html'"></div>
+                </md-card-header>
+                <md-card-content>
+                    <md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
+                    <md-table-container>
+                        <table class="table-pagination">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>nombre</th>
+                                    <th>direccion</th>
+                                    <th>fecha_nac</th>
+                                    <th>updated_at</th>
+                                    <th colspan="2">acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="d in lista">
+                                    <td> {{ (options.page - 1) * options.page_size +$index +1 }} </td>
+                                    <td> {{ d.nombre }} </td>
+                                    <td> {{ d.direccion }} </td>
+                                    <td> {{ d.fecha_nac | date:'shortDate' }} </td>
+                                    <td> {{ d.updated_at | date:'shortDate' }} </td>
+                                    <td>
+                                        u
+                                    </td>
+                                    <td>
+                                        x
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                    <md-table-pagination>
+                        <app-pagination ng-if="options.pages>0" per="options.page_size" page="options.page" format="{{'jumping'}}" display="4" rango="options.range" accion="list(params)" pages="options.pages" query="query" fields="{{fields}}"></app-pagination>
+                    </md-table-pagination>
+                </md-card-content>
+            </md-card>
+        </div>
+    </md-content>
+</div>
