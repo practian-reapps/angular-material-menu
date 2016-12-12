@@ -1,8 +1,7 @@
 app
     .controller('MainCtrl', function($scope, $timeout, $log, $rootScope, $filter,
-        apiUrl, $window, menuService, $mdSidenav) {
+        apiUrl, $window, $mdSidenav) {
 
-        $scope.menu = menuService;
         console.log("MainCtrl");
 
         // set save dynamicTheme
@@ -101,7 +100,7 @@ app
                         $log.debug("toggle " + navID + " is done");
                     });
             };
-        } 
+        }
 
 
     })

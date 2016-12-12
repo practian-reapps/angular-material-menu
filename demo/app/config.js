@@ -79,8 +79,18 @@ app
 //====================================================
 // 
 //====================================================
-.run(function($state, $rootScope, $location, $window, userService) {
+.run(function($state, $rootScope, $location, $window, userService, menuService) {
 
     userService.userName = 'demo';
+
+    console.log("run");
+    menuService.menuUrl = "menu.json";
+    //menuService.apiMenuUrl = "http://localhost:7001/api/oauth2_backend/usermenu/";
+
+    $rootScope.menu = menuService.getMenu();
+
+
+
+
 
 });

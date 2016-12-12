@@ -6,8 +6,8 @@ var app = angular.module('app', [
 ]);
 
 app.constant("apiUrl", "http://localhost:8003"); // Resource Server -> catalogo
-app.constant("menuUrl", "menu.json"); // menu inicio
-app.constant("apiMenuUrl", ""); // http://localhost:7001/api/oauth2_backend/usermenu/ Api que trae el menu del usuario
+//app.constant("menuUrl", "menu.json"); // menu inicio
+//app.constant("apiMenuUrl", ""); // http://localhost:7001/api/oauth2_backend/usermenu/ Api que trae el menu del usuario
 
 
 
