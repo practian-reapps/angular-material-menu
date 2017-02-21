@@ -162,7 +162,12 @@ Construcción del menú:
         </ul>
     </nav>
 
-Finally, run ``gulp serve``.
+Finally, run:
+
+.. code-block:: bash
+
+    #run
+    $ gulp
 
 
 
